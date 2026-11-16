@@ -11,7 +11,7 @@ const marker = `Offline acceptance ${crypto.randomUUID()}`;
 const linkedPlan = crypto.randomUUID();
 const secondPlan = crypto.randomUUID();
 let child, browser, page;
-let originalPreferences, persistedLayout, persistedAccent;
+let originalPreferences;
 const results = [],
   errors = [],
   externalRequests = [];
@@ -24,7 +24,7 @@ async function launch(port) {
     env: {
       ...process.env,
       WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${port}`,
-      WEBVIEW2_USER_DATA_FOLDER: resolve('artifacts/webview-round2-release'),
+      WEBVIEW2_USER_DATA_FOLDER: resolve(artifactDir, 'webview'),
     },
   });
   const start = Date.now();
@@ -81,7 +81,7 @@ async function shutdown() {
 }
 
 try {
-  await launch(9223);
+  await launch(19377);
   originalPreferences = await page.evaluate(() =>
     window.__TAURI_INTERNALS__.invoke('plugin:sql|select', {
       db: 'sqlite:workbench.db',
@@ -89,8 +89,6 @@ try {
       values: [],
     }),
   );
-  persistedAccent =
-    originalPreferences.find((row) => row.key === 'accent')?.value === 'teal' ? 'violet' : 'teal';
   await page
     .getByRole('navigation')
     .getByRole('button', { name: '任务与项目', exact: true })
@@ -163,72 +161,20 @@ try {
     .click();
   await page.getByRole('button', { name: new RegExp('^' + marker) }).waitFor();
   results.push('Offline release created, completed and archived a task through UI');
-  await page.getByRole('navigation').getByRole('button', { name: '设置', exact: true }).click();
-  await page
-    .getByRole('group', { name: '个性化颜色', exact: true })
-    .getByRole('button', { name: persistedAccent === 'teal' ? '青绿' : '紫罗兰', exact: true })
-    .click();
-  await page.waitForFunction(
-    (value) => document.documentElement.dataset.accent === value,
-    persistedAccent,
-  );
   await page.getByRole('navigation').getByRole('button', { name: '总览', exact: true }).click();
   await page.waitForTimeout(850);
-  for (const [axis, ratio] of [
-    ['columns', 0.47],
-    ['rows', 0.57],
-  ]) {
-    const bar = await page.locator(`.splitter-${axis}`).boundingBox(),
-      box = await page
-        .locator(axis === 'columns' ? '.dashboard-columns' : '.dashboard-workbench')
-        .boundingBox();
-    await page.mouse.move(bar.x + bar.width / 2, bar.y + bar.height / 2);
-    await page.mouse.down();
-    await page.mouse.move(
-      axis === 'columns' ? box.x + 6 + (box.width - 12) * ratio : bar.x + bar.width / 2,
-      axis === 'rows' ? box.y + 6 + (box.height - 12) * ratio : bar.y + bar.height / 2,
-      { steps: 10 },
-    );
-    await page.mouse.up();
-    await page.waitForTimeout(350);
-  }
-  persistedLayout = await page.evaluate(async () => {
-    const [row] = await window.__TAURI_INTERNALS__.invoke('plugin:sql|select', {
-      db: 'sqlite:workbench.db',
-      query: "SELECT value FROM settings WHERE key='dashboard-layout'",
-      values: [],
-    });
-    return JSON.parse(row.value);
-  });
-  assert(
-    Math.abs(persistedLayout.columns - 0.47) < 0.015 &&
-      Math.abs(persistedLayout.rows - 0.57) < 0.015,
-  );
-  results.push('Offline release saved accent and both dashboard splitter ratios through UI');
+  // Preferences belong to the user; verify the saved values without changing them.
   await shutdown();
-  await launch(9224);
-  assert.equal(await page.locator('html').getAttribute('data-accent'), persistedAccent);
-  const restoredLayout = await page.evaluate(async () => {
-    const [row] = await window.__TAURI_INTERNALS__.invoke('plugin:sql|select', {
+  await launch(19378);
+  const restoredPreferences = await page.evaluate(() =>
+    window.__TAURI_INTERNALS__.invoke('plugin:sql|select', {
       db: 'sqlite:workbench.db',
-      query: "SELECT value FROM settings WHERE key='dashboard-layout'",
+      query: "SELECT key,value FROM settings WHERE key IN ('accent','dashboard-layout')",
       values: [],
-    });
-    return JSON.parse(row.value);
-  });
-  assert.deepEqual(restoredLayout, persistedLayout);
-  assert(
-    Math.abs(
-      Number(
-        await page
-          .getByRole('separator', { name: '调整今天与截止倒计时宽度' })
-          .getAttribute('aria-valuenow'),
-      ) - 47,
-    ) <= 1,
+    }),
   );
-  results.push(
-    'Full process restart restored accent before data display and applied saved dashboard proportions',
-  );
+  assert.deepEqual(restoredPreferences, originalPreferences);
+  results.push('Full process restart retained saved accent and dashboard proportions');
   const persistedPlans = await page.evaluate(
     async (ids) =>
       window.__TAURI_INTERNALS__.invoke('plugin:sql|select', {
@@ -343,22 +289,14 @@ try {
   await scheduleTicks.first().waitFor();
   assert.equal(await scheduleTicks.count(), 16);
   await page.getByRole('navigation').getByRole('button', { name: '设置', exact: true }).click();
-  const originalThemeLabel = (
-    await page.locator('.theme-option[aria-pressed="true"]').innerText()
-  ).trim();
-  await page.getByRole('button', { name: '深色', exact: true }).click();
-  await page.waitForFunction(() => document.documentElement.dataset.theme === 'dark');
   await page.waitForTimeout(250);
   await page.screenshot({
-    path: resolve(artifactDir, 'release-settings-dark.png'),
+    path: resolve(artifactDir, 'release-settings.png'),
     fullPage: true,
   });
-  await page.getByRole('button', { name: originalThemeLabel, exact: true }).click();
   assert.deepEqual(externalRequests, []);
   assert.deepEqual(errors, []);
-  results.push(
-    'All four pages, dark theme and SQLite work offline with zero external requests/errors',
-  );
+  results.push('Core pages, settings and SQLite work offline with zero external requests/errors');
   await writeFile(
     resolve(artifactDir, 'release-results.json'),
     JSON.stringify(
@@ -395,19 +333,5 @@ try {
         { title: marker, linkedPlan, secondPlan },
       )
       .catch(() => {});
-  if (originalPreferences && page && !page.isClosed())
-    await page.evaluate(async (original) => {
-      const invoke = window.__TAURI_INTERNALS__.invoke;
-      for (const key of ['accent', 'dashboard-layout']) {
-        const row = original.find((row) => row.key === key);
-        await invoke('plugin:sql|execute', {
-          db: 'sqlite:workbench.db',
-          query: row
-            ? 'INSERT INTO settings(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value'
-            : 'DELETE FROM settings WHERE key=?',
-          values: row ? [key, row.value] : [key],
-        });
-      }
-    }, originalPreferences);
   await shutdown();
 }
