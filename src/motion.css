@@ -1,0 +1,288 @@
+:root {
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-sidebar: 420ms;
+  --motion-fast: 180ms;
+}
+/* A single width drives the grid and drawer, so reversal continues from the current size. */
+.app-shell {
+  --sidebar-width: 230px;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  transition: grid-template-columns var(--motion-sidebar) var(--motion-ease);
+}
+.app-shell.sidebar-collapsed {
+  --sidebar-width: 64px;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+}
+.sidebar,
+.sidebar-collapsed .sidebar {
+  width: var(--sidebar-width);
+  padding: 22px 12px 14px;
+  transition:
+    width var(--motion-sidebar) var(--motion-ease),
+    background-color var(--motion-fast) var(--motion-ease);
+}
+.brand,
+.sidebar-collapsed .brand {
+  width: 204px;
+  padding: 0 8px 25px;
+  flex-shrink: 0;
+}
+.brand div,
+.sidebar-collapsed .brand div {
+  display: block;
+}
+.workspace-label,
+.sidebar-collapsed .workspace-label {
+  display: flex;
+  width: 204px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.sidebar-projects,
+.sidebar-collapsed .sidebar-projects {
+  display: block;
+  width: 204px;
+}
+.sidebar-bottom,
+.sidebar-collapsed .sidebar-bottom {
+  display: block;
+  width: 204px;
+  flex-shrink: 0;
+}
+.nav-item,
+.sidebar-collapsed .nav-item {
+  position: relative;
+  isolation: isolate;
+  justify-content: flex-start;
+  padding: 9px 10px;
+  overflow: hidden;
+  gap: 12px;
+}
+.nav-item > svg {
+  flex-shrink: 0;
+}
+.nav-item > span,
+.sidebar-collapsed .nav-item > span {
+  display: inline-flex;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.nav-item .nav-count {
+  position: absolute;
+  right: 10px;
+}
+.brand div,
+.workspace-label,
+.sidebar-projects,
+.sidebar-bottom,
+.nav-item > span {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 200ms var(--motion-ease) 90ms,
+    visibility 0s 0s;
+}
+.sidebar-collapsed .brand div,
+.sidebar-collapsed .workspace-label,
+.sidebar-collapsed .sidebar-projects,
+.sidebar-collapsed .sidebar-bottom,
+.sidebar-collapsed .nav-item > span {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 120ms var(--motion-ease),
+    visibility 0s 120ms;
+}
+.nav-item.active {
+  background: var(--clear);
+}
+.nav-active-indicator {
+  position: absolute;
+  inset: 0;
+  background: var(--primary-tint);
+  border-radius: 6px;
+  z-index: -1;
+  pointer-events: none;
+}
+.page-transition {
+  min-width: 0;
+}
+button {
+  transition:
+    background-color var(--motion-fast) var(--motion-ease),
+    border-color var(--motion-fast) var(--motion-ease),
+    color var(--motion-fast) var(--motion-ease);
+}
+button:active:not(:disabled):not(.nav-item):not(.date-cell):not(.window-controls button) {
+  transform: translateY(1px);
+}
+input,
+textarea,
+.date-control,
+.select-trigger {
+  transition:
+    border-color var(--motion-fast) var(--motion-ease),
+    background-color var(--motion-fast) var(--motion-ease);
+}
+.select-trigger > svg,
+.chevron {
+  transition: transform 240ms var(--motion-ease);
+}
+.stage-segment > span > i,
+.date-load > i {
+  transition: width 420ms var(--motion-ease);
+}
+.date-cell {
+  isolation: isolate;
+}
+.date-cell.selected {
+  background: var(--clear);
+}
+.date-selection {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--primary-tint);
+  pointer-events: none;
+}
+.toast-position {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  width: max-content;
+  max-width: 90vw;
+  pointer-events: none;
+}
+.toast {
+  position: relative;
+  inset: auto;
+  transform: none;
+  max-width: 100%;
+  pointer-events: auto;
+}
+/* Animate the complete modal surface, never the contents of its scroll viewport. */
+.modal::backdrop {
+  opacity: 1;
+  transition: opacity 240ms var(--motion-ease);
+}
+@starting-style {
+  .modal[open]::backdrop {
+    opacity: 0;
+  }
+}
+.modal[data-closing]::backdrop {
+  opacity: 0;
+}
+.modal[data-closing] {
+  pointer-events: none;
+}
+/* Discrete display/overlay transitions retain the native top layer during both directions. */
+.control-popover {
+  --popover-shift: 6px;
+  opacity: 0;
+  transform: translateY(var(--popover-shift)) scale(0.985);
+  transform-origin: top left;
+  transition:
+    opacity 160ms var(--motion-ease),
+    transform 240ms var(--motion-ease),
+    display 240ms allow-discrete,
+    overlay 240ms allow-discrete;
+}
+.control-popover[data-side='top'] {
+  --popover-shift: -6px;
+  transform-origin: bottom left;
+}
+.control-popover:popover-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.control-popover:not(:popover-open) {
+  pointer-events: none;
+}
+@starting-style {
+  .control-popover:popover-open {
+    opacity: 0;
+    transform: translateY(var(--popover-shift)) scale(0.985);
+  }
+}
+@media (max-width: 760px) {
+  .compact-shell,
+  .compact-shell.sidebar-collapsed {
+    grid-template-columns: 48px minmax(0, 1fr);
+    --sidebar-width: min(260px, calc(100vw - 48px));
+  }
+  .compact-shell.sidebar-collapsed {
+    --sidebar-width: 48px;
+  }
+  .compact-shell .sidebar,
+  .compact-shell:not(.sidebar-collapsed) .sidebar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--sidebar-width);
+    z-index: 5;
+    padding: 22px 5px 14px;
+  }
+  .compact-shell .brand,
+  .compact-shell.sidebar-collapsed .brand {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .compact-shell .nav-item,
+  .compact-shell.sidebar-collapsed .nav-item {
+    padding: 9px 10px;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .compact-shell .sidebar-projects,
+  .compact-shell .workspace-label,
+  .compact-shell .sidebar-bottom {
+    width: 226px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after,
+  *::backdrop {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+  button:active:not(:disabled):not(.nav-item):not(.date-cell):not(.window-controls button) {
+    transform: none;
+  }
+}
+@supports (interpolate-size: allow-keywords) {
+  .tree-stage::details-content {
+    interpolate-size: allow-keywords;
+    height: 0;
+    overflow: clip;
+    transition:
+      height 280ms var(--motion-ease),
+      content-visibility 280ms allow-discrete;
+  }
+  .tree-stage[open]::details-content {
+    height: auto;
+  }
+}
+.app-shell main {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* One geometry owner per view; transforms never add document scrollbars. */
+.view-switch {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  overflow-clip-margin: 8px;
+  min-width: 0;
+}
+.view-switch-pane {
+  min-width: 0;
+  display: flow-root;
+}

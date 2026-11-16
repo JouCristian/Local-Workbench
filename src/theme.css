@@ -1,0 +1,121 @@
+:root {
+  --canvas: #f3f5f7;
+  --sidebar: #e9edf2;
+  --surface: #ffffff;
+  --text: #1f2a37;
+  --text-2: #5b6676;
+  --text-3: #8a94a3;
+  --border: #e1e5ea;
+  --task-check-outline: #000000;
+  --primary: #2f5d8a;
+  --primary-tint: #e3ecf5;
+  --overdue: #c8372d;
+  --today: #d9731a;
+  --soon: #b8921c;
+  --done: #5e9c76;
+  --project-1: #2e8b7a;
+  --project-2: #7a5ba6;
+  --project-3: #b5651d;
+  --project-4: #a8456b;
+  --project-5: #5b7f2b;
+  --on-primary: #ffffff;
+  --overlay: rgb(16 20 26 / 0.32);
+  --shadow: 0 12px 48px rgb(16 20 26 / 0.18);
+  --clear: transparent;
+  --scroll-thumb: #bcc4ce;
+  --scroll-hover: #8a94a3;
+  --titlebar-height: 34px;
+  --assistant-spectrum-1: #f76a8c;
+  --assistant-spectrum-2: #f2a05d;
+  --assistant-spectrum-3: #eed686;
+  --assistant-spectrum-4: #73cfa4;
+  --assistant-spectrum-5: #69d5e4;
+  --assistant-spectrum-6: #739ff3;
+  --assistant-spectrum-7: #bb91ea;
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  --canvas: #14181d;
+  --sidebar: #10141a;
+  --surface: #1b2027;
+  --text: #e6eaf0;
+  --text-2: #9aa5b4;
+  --text-3: #8793a3;
+  --border: #2a313a;
+  --task-check-outline: #ffffff;
+  --primary: #6fa3d8;
+  --primary-tint: #1f2f40;
+  --on-primary: #10141a;
+  --scroll-thumb: #414c5b;
+  --scroll-hover: #647286;
+  --overlay: rgb(0 0 0 / 0.5);
+  color-scheme: dark;
+}
+
+/* Personal accents change interaction roles only. Deadline/project roles stay semantic. */
+:root {
+  --accent-blue: #2f5d8a;
+  --accent-teal: #246c64;
+  --accent-green: #416b3c;
+  --accent-violet: #72509a;
+  --accent-rose: #954267;
+  --accent-amber: #805910;
+  --accent-graphite: #526171;
+}
+:root[data-accent='teal'] {
+  --primary: var(--accent-teal);
+  --primary-tint: #e1efec;
+}
+:root[data-accent='green'] {
+  --primary: var(--accent-green);
+  --primary-tint: #e7efdf;
+}
+:root[data-accent='violet'] {
+  --primary: var(--accent-violet);
+  --primary-tint: #ede6f4;
+}
+:root[data-accent='rose'] {
+  --primary: var(--accent-rose);
+  --primary-tint: #f3e5ed;
+}
+:root[data-accent='amber'] {
+  --primary: var(--accent-amber);
+  --primary-tint: #f3ecd8;
+}
+:root[data-accent='graphite'] {
+  --primary: var(--accent-graphite);
+  --primary-tint: #e7ebef;
+}
+:root[data-theme='dark'] {
+  --accent-blue: #6fa3d8;
+  --accent-teal: #72beb0;
+  --accent-green: #9bbf83;
+  --accent-violet: #b398d7;
+  --accent-rose: #d995b5;
+  --accent-amber: #d6b467;
+  --accent-graphite: #a4b2c3;
+}
+:root[data-theme='dark'][data-accent='teal'] {
+  --primary: var(--accent-teal);
+  --primary-tint: #1c3432;
+}
+:root[data-theme='dark'][data-accent='green'] {
+  --primary: var(--accent-green);
+  --primary-tint: #283323;
+}
+:root[data-theme='dark'][data-accent='violet'] {
+  --primary: var(--accent-violet);
+  --primary-tint: #30263e;
+}
+:root[data-theme='dark'][data-accent='rose'] {
+  --primary: var(--accent-rose);
+  --primary-tint: #3b2733;
+}
+:root[data-theme='dark'][data-accent='amber'] {
+  --primary: var(--accent-amber);
+  --primary-tint: #373021;
+}
+:root[data-theme='dark'][data-accent='graphite'] {
+  --primary: var(--accent-graphite);
+  --primary-tint: #293039;
+}

@@ -1,0 +1,154 @@
+/* Calendar execution blocks share the task's project color. */
+:root {
+  --calendar-fill: 13%;
+  --calendar-edge: 30%;
+  --dashboard-list-height: clamp(260px, calc(100dvh - 510px), 520px);
+}
+:root[data-theme='dark'] {
+  --calendar-fill: 24%;
+  --calendar-edge: 48%;
+}
+.time-block {
+  background: color-mix(in srgb, var(--event-color) var(--calendar-fill), var(--surface));
+  border-color: color-mix(in srgb, var(--event-color) var(--calendar-edge), var(--border));
+  border-left: 3px solid var(--event-color);
+}
+.time-block .agenda-item-content {
+  color: var(--text);
+}
+.time-block {
+  overflow: visible;
+}
+.time-block .agenda-item-content,
+.time-block .check-button,
+.time-block .agenda-entry-dot {
+  position: sticky;
+  top: 8px;
+  align-self: flex-start;
+}
+.time-block .item-meta {
+  color: var(--text-2);
+}
+.time-block:hover {
+  background: color-mix(in srgb, var(--event-color) 22%, var(--surface));
+}
+.stable-scroll {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  min-width: 0;
+}
+.dashboard-agenda-scroll,
+.dashboard-page .deadline-list {
+  height: var(--dashboard-list-height);
+  padding-right: 8px;
+}
+.dashboard-agenda-scroll {
+  position: relative;
+}
+.content:has(.dashboard-page) > .workspace-footer {
+  display: none;
+}
+.dashboard-agenda-scroll .hour-timeline {
+  margin-top: 16px;
+}
+.dashboard-agenda-scroll .axis-empty {
+  display: none;
+}
+.dashboard-agenda-scroll .agenda-group {
+  padding-right: 4px;
+}
+.deadline-reminder {
+  background: var(--primary-tint);
+  border-radius: 6px;
+  margin-block: 4px;
+  padding-inline: 12px;
+}
+.task-plan-heading {
+  margin-bottom: 12px;
+}
+.task-plan-heading > strong {
+  display: block;
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
+}
+.task-plan-heading > p {
+  color: var(--text-2);
+  margin-block: 6px;
+}
+.task-plan-editor {
+  border-bottom: 1px solid var(--border);
+  padding-block: 12px;
+  overflow: hidden;
+}
+.task-plan-row-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.task-plan-row-head .icon-button {
+  margin-left: auto;
+}
+.task-plan-row-head h3 {
+  font-weight: 600;
+}
+.task-plan-editor .form-grid {
+  margin-bottom: 12px;
+}
+.plan-details-toggle {
+  font-size: 0.82rem;
+  padding-left: 0;
+}
+.plan-extra {
+  overflow: hidden;
+}
+.plan-extra .field {
+  margin-top: 10px;
+}
+.add-task-plan {
+  width: 100%;
+  margin-top: 16px;
+  color: var(--primary);
+}
+.removed-plans {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: var(--text-2);
+}
+.removed-plans button {
+  display: flex;
+  margin-top: 6px;
+}
+.task-schedules-form .form-error {
+  margin-top: 12px;
+}
+@media (min-width: 981px) {
+  .dashboard-page .dashboard-status {
+    margin-bottom: 18px;
+  }
+  .dashboard-page .dashboard-summary {
+    margin-bottom: 18px;
+  }
+  .dashboard-page .horizon-section {
+    margin: 20px 0 20px;
+  }
+  .dashboard-page .date-cell {
+    min-height: 94px;
+  }
+  .dashboard-page .project-section {
+    margin-top: 22px;
+    padding-top: 18px;
+  }
+}
+@media (max-width: 980px) {
+  :root {
+    --dashboard-list-height: 360px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .time-block {
+    transition: none;
+  }
+}

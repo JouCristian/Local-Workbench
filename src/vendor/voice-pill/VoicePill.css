@@ -1,0 +1,178 @@
+/* React Bits Voice Pill, adapted to controlled native capture and app tokens. */
+.voice-pill-slot {
+  --vp-size: 30px;
+  --vp-extra: 114px;
+  --vp-wave-w: 42px;
+  --vp-clock-w: 34px;
+  --vp-open: 320ms;
+  position: relative;
+  width: var(--vp-size);
+  height: var(--vp-size);
+  flex: 0 0 auto;
+  transition: width var(--vp-open) var(--motion-ease);
+}
+.voice-pill-slot[data-expanded='true'] {
+  width: calc(var(--vp-size) + var(--vp-extra));
+}
+.voice-pill {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  width: var(--vp-size);
+  height: var(--vp-size);
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  background: var(--clear);
+  color: var(--text-2);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.voice-pill:disabled {
+  cursor: wait;
+  opacity: 1;
+}
+.voice-pill-slot[data-expanded='false'] .voice-pill:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.voice-pill__capsule {
+  position: absolute;
+  inset: 0 0 0 calc(-1 * var(--vp-extra));
+  border-radius: calc(var(--vp-size) / 2);
+  background: var(--clear);
+  clip-path: inset(0 0 0 var(--vp-extra) round calc(var(--vp-size) / 2));
+  pointer-events: none;
+  transition:
+    clip-path var(--vp-open) var(--motion-ease),
+    background-color var(--vp-open) var(--motion-ease);
+}
+.voice-pill-slot[data-expanded='true'] .voice-pill__capsule {
+  clip-path: inset(0 0 round calc(var(--vp-size) / 2));
+  background: var(--primary-tint);
+}
+.voice-pill__time {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 100%;
+  display: grid;
+  place-items: center;
+  width: var(--vp-clock-w);
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--vp-open) var(--motion-ease);
+}
+.voice-pill__wave {
+  position: absolute;
+  top: 18%;
+  right: calc(100% + var(--vp-clock-w));
+  width: var(--vp-wave-w);
+  height: 64%;
+  color: var(--primary);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--vp-open) var(--motion-ease);
+}
+.voice-pill-slot[data-expanded='true'] .voice-pill__time,
+.voice-pill[data-state='recording'] .voice-pill__wave {
+  opacity: 1;
+}
+.voice-pill__glyph {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.voice-pill__glyph > * {
+  grid-area: 1 / 1;
+  transition:
+    opacity 180ms var(--motion-ease),
+    transform 180ms var(--motion-ease);
+}
+.voice-pill__stop,
+.voice-pill__loader {
+  opacity: 0;
+  color: var(--primary);
+}
+.voice-pill-slot[data-expanded='true'] .voice-pill__mic {
+  opacity: 0;
+  transform: scale(0.7);
+}
+.voice-pill[data-state='recording'] .voice-pill__stop {
+  opacity: 1;
+}
+.voice-pill[data-state='recognizing'] .voice-pill__loader,
+.voice-pill[data-state='starting'] .voice-pill__loader {
+  opacity: 1;
+  animation: voice-pill-spin 900ms linear infinite;
+}
+.voice-pill__cancel {
+  position: absolute;
+  left: 4px;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: var(--vp-size);
+  padding: 0;
+  background: var(--clear);
+  border: 0;
+  border-radius: 6px;
+  color: var(--primary);
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transition: opacity var(--vp-open) var(--motion-ease);
+}
+.voice-pill-slot[data-expanded='true'] .voice-pill__cancel {
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (hover: hover) {
+  .voice-pill:not(:disabled):hover {
+    color: var(--primary);
+  }
+  .voice-pill__cancel:hover {
+    background: color-mix(in srgb, var(--primary) 10%, var(--clear));
+  }
+}
+.voice-pill:focus-visible,
+.voice-pill__cancel:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.voice-pill__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@keyframes voice-pill-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 600px) {
+  .voice-pill-slot {
+    --vp-extra: 76px;
+    --vp-wave-w: 18px;
+    --vp-clock-w: 29px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .voice-pill-slot,
+  .voice-pill-slot * {
+    transition-duration: 0ms !important;
+    animation: none !important;
+  }
+}

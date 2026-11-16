@@ -1,0 +1,90 @@
+{
+  "format": "local-workbench",
+  "version": 1,
+  "exported_at": "2026-11-12T00:00:00.000Z",
+  "projects": [
+    {
+      "id": "25d6487e-c012-4048-b5a7-8fe456d07a52",
+      "title": "个人阅读计划",
+      "created_at": "2026-11-12T00:00:00.000Z",
+      "updated_at": "2026-11-12T00:00:00.000Z",
+      "notes": "一个不含个人资料的通用项目示例。"
+    }
+  ],
+  "stages": [
+    {
+      "id": "dcf20e73-3505-48c5-b72b-d224de1f7145",
+      "title": "整理阅读清单",
+      "created_at": "2026-11-12T00:00:00.000Z",
+      "updated_at": "2026-11-12T00:00:00.000Z",
+      "project_id": "25d6487e-c012-4048-b5a7-8fe456d07a52",
+      "start_date": "2026-11-12",
+      "end_date": "2026-11-18"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "22e30d78-2f7c-4008-9ebb-1d5bd18eb8c7",
+      "title": "列出三本想读的书",
+      "created_at": "2026-11-12T00:00:00.000Z",
+      "updated_at": "2026-11-12T00:00:00.000Z",
+      "notes": "",
+      "status": "todo",
+      "priority": "medium",
+      "due_date": "2026-11-18",
+      "due_time": null,
+      "project_id": "25d6487e-c012-4048-b5a7-8fe456d07a52",
+      "stage_id": "dcf20e73-3505-48c5-b72b-d224de1f7145"
+    },
+    {
+      "id": "37944836-d248-4faa-b5bb-3e1fd010fddb",
+      "title": "整理桌面",
+      "created_at": "2026-11-12T00:00:00.000Z",
+      "updated_at": "2026-11-12T00:00:00.000Z",
+      "notes": "",
+      "status": "todo",
+      "priority": "low",
+      "due_date": "2026-11-15",
+      "due_time": null,
+      "project_id": null,
+      "stage_id": null
+    }
+  ],
+  "schedules": [
+    {
+      "id": "b88a7737-8692-484c-91a0-d2ee846f6308",
+      "title": "列出三本想读的书",
+      "created_at": "2026-11-12T00:00:00.000Z",
+      "updated_at": "2026-11-12T00:00:00.000Z",
+      "notes": "",
+      "date": "2026-11-12",
+      "period": "evening",
+      "start_time": null,
+      "end_time": null,
+      "task_id": "22e30d78-2f7c-4008-9ebb-1d5bd18eb8c7"
+    },
+    {
+      "id": "63cdae91-19ff-4e9b-9766-6627270d39cc",
+      "title": "预留阅读时间",
+      "created_at": "2026-11-12T00:00:00.000Z",
+      "updated_at": "2026-11-12T00:00:00.000Z",
+      "notes": "",
+      "date": "2026-11-13",
+      "period": "exact",
+      "start_time": "19:30",
+      "end_time": null,
+      "task_id": null
+    }
+  ],
+  "events": [
+    {
+      "id": "ae29b086-66a2-43aa-947c-911ad0f1d506",
+      "title": "周末休息",
+      "created_at": "2026-11-12T00:00:00.000Z",
+      "updated_at": "2026-11-12T00:00:00.000Z",
+      "date": "2026-11-14",
+      "kind": "rest",
+      "notes": "给休息留出空间。"
+    }
+  ]
+}

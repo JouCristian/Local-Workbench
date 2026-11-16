@@ -1,0 +1,79 @@
+/* Directional calendar highlight and explicit task-selection mode. */
+.date-strip {
+  position: relative;
+  isolation: isolate;
+}
+.date-strip > .date-selection {
+  inset: auto;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.date-strip > .date-cell {
+  position: relative;
+  z-index: 1;
+}
+.bulk-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.bulk-toolbar > strong {
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 500;
+}
+.bulk-toolbar > .button-group {
+  margin-left: auto;
+}
+.bulk-toolbar > .form-error {
+  width: 100%;
+}
+.selection-check {
+  width: 19px;
+  min-width: 19px;
+  height: 19px;
+  min-height: 19px;
+  padding: 0;
+  border-radius: 4px;
+  color: var(--primary);
+  background: var(--clear);
+  border: 1px solid var(--text-3);
+}
+.selection-check[aria-checked='true'] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+.task-row[data-selected='true'] {
+  background: var(--primary-tint);
+}
+@media (max-width: 760px) {
+  .bulk-toolbar {
+    gap: 10px;
+  }
+  .bulk-toolbar > .button-group {
+    width: 100%;
+    margin-left: 0;
+  }
+  .bulk-toolbar button {
+    font-size: 0.85rem;
+  }
+}
+.bulk-toolbar input:indeterminate {
+  border-color: var(--primary);
+  background-image: linear-gradient(var(--primary), var(--primary));
+  background-size: 7px 2px;
+  background-repeat: no-repeat;
+  background-position: center;
+}

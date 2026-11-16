@@ -1,0 +1,23 @@
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+*.log
+*.tsbuildinfo
+.local-reference/
+private/
+artifacts/
+.env
+.env.*
+*.db
+*.db-shm
+*.db-wal
+*.sqlite*
+*.local.json
+.DS_Store
+Thumbs.db
+
+# Machine-local handoff notes; keep available locally, never publish them.
+docs/DEVELOPMENT-HANDOFF.md
+docs/DEEPSEEK-BOOTSTRAP-PROMPT.md
+docs/FILES.txt

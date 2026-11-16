@@ -1,0 +1,216 @@
+/* UI iteration 3: one owner for each focus border and opacity-only page transitions. */
+input:focus-visible,
+textarea:focus-visible {
+  outline: none;
+}
+input,
+textarea,
+.date-control,
+.search-field,
+.quick-add,
+.select-trigger {
+  transition:
+    border-color 180ms var(--motion-ease),
+    box-shadow 180ms var(--motion-ease),
+    background-color 180ms var(--motion-ease);
+}
+input:focus,
+textarea:focus,
+.date-control:focus-within,
+.search-field:focus-within,
+.quick-add:focus-within,
+.select-trigger:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--primary) 32%, var(--clear));
+}
+.date-control input:focus,
+.search-field input:focus,
+.quick-add input:focus,
+.select-search input:focus,
+.picker-year:focus {
+  outline: none;
+  border: 0;
+  box-shadow: none;
+}
+.select-search input,
+.select-search input:focus-visible {
+  outline: none;
+  box-shadow: none;
+  border: 0;
+}
+.modal-head h2:focus {
+  outline: none;
+}
+.control-popover {
+  display: none;
+  flex-direction: column;
+  opacity: 1;
+  transform: none !important;
+  transition: none !important;
+}
+.control-popover:popover-open {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transform: none !important;
+}
+.control-popover[data-closing] {
+  pointer-events: none;
+}
+.control-popover.help-popover:popover-open {
+  display: block !important;
+}
+@starting-style {
+  .control-popover:popover-open {
+    opacity: 1;
+    transform: none;
+  }
+}
+.agenda-group,
+.compact-time-node {
+  overflow: hidden;
+}
+.stage-summary {
+  list-style: none;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  gap: 9px;
+  cursor: pointer;
+  padding: 14px 0;
+  background: var(--clear);
+  border: 0;
+  border-radius: 0;
+}
+.stage-summary:active {
+  transform: none !important;
+}
+.stage-summary:hover {
+  background: var(--clear);
+}
+.tree-stage[data-open='true'] .chevron {
+  transform: rotate(90deg);
+}
+.stage-collapse {
+  will-change: height;
+}
+.task-category-tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+.task-category-tabs button {
+  background: var(--clear);
+  border: 0;
+  color: var(--text-2);
+}
+.task-category-tabs .selected {
+  background: var(--primary-tint);
+  color: var(--primary);
+}
+.task-category-tabs button:last-child {
+  margin-left: auto;
+}
+.detailed-task-row {
+  min-height: 62px;
+}
+.task-date-detail {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+.archived-project-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.archived-project-row .item-main {
+  justify-content: flex-start;
+}
+.duplicate-notice {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  background: var(--canvas);
+  font-size: 0.85rem;
+}
+.duplicate-notice p {
+  color: var(--text-2);
+  margin-top: 6px;
+  line-height: 1.6;
+}
+.duplicate-notice > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.duplicate-notice > div > span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.duplicate-notice small {
+  display: block;
+  color: var(--text-2);
+  white-space: pre-wrap;
+}
+.task-row .item-title,
+.agenda-item .item-title {
+  transition:
+    color 180ms var(--motion-ease),
+    text-decoration-color 180ms var(--motion-ease);
+}
+@media (max-width: 760px) {
+  .task-date-detail {
+    font-size: 0.77rem;
+  }
+  .archived-project-row .item-meta {
+    width: 100%;
+  }
+  .task-category-tabs {
+    gap: 2px;
+  }
+  .task-category-tabs button {
+    padding-inline: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  input,
+  textarea,
+  .date-control,
+  .search-field,
+  .quick-add,
+  .select-trigger,
+  .task-row .item-title,
+  .agenda-item .item-title {
+    transition: none;
+  }
+}
+.task-list {
+  position: relative;
+  min-height: 40px;
+}
+.task-list > .group-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  animation: empty-reveal 160ms var(--motion-ease) 240ms both;
+}
+@keyframes empty-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
